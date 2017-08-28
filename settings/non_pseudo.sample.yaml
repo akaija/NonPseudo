@@ -1,4 +1,5 @@
-simulations_directory: 'NON_PSEUDO'
+simulations_directory: 'non_pseudo'
+materials_directory: 'cif_files'
 
 retests:
   number: 3

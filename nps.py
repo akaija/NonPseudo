@@ -9,6 +9,7 @@ import yaml
 
 import non_pseudo
 from non_pseudo.files import load_config_file
+from non_pseudo.non_pseudo import worker_run_loop
 
 @click.group()
 def nps():
@@ -38,6 +39,20 @@ def start(config_path):
     with open(file_name, 'w') as config_file:
         yaml.dump(config, config_file, default_flow_style=False)
     print('Run created with id: {}'.format(run_id))
+
+@nps.command()
+@click.argument('run_id')
+def launch_worker(run_id):
+    """Start process to manage run.
+
+    Args:
+        run_id (str): identification string for run.
+
+    Launches worker to identify next material, simulate its properties, and
+    store results in database.
+    """
+    non_pseudo._init(run_id)
+    worker_run_loop(run_id)
 
 if __name__ == '__main__':
     nps()
