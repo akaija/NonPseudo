@@ -1,0 +1,20 @@
+simulations_directory: 'NON_PSEUDO'
+
+retests:
+  number: 3
+  tolerance: 0.25
+
+simulations:
+  helium_void_fraction:
+    simulation_cycles: 500
+    limits: [0, 1]
+  gas_adsorption:
+    adsorbate: 'methane'
+    external_pressure: [3500000, 6500000]
+    external_temperature: 298
+    initialization_cycles: 500
+    simulation_cycles: 500
+    limits: [0, 300]
+  surface_area:
+    simulation_cycles: 100
+    limits: [0, 4500]

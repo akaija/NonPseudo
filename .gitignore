@@ -1,2 +1,3 @@
 settings/database.yaml
 __pycache__
+settings/non_pseudo.yaml
