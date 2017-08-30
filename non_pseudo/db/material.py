@@ -62,6 +62,9 @@ class Material(Base):
     # void fraction
     vf_helium_void_fraction = Column(Float)                   # dimm.
 
+    # check that all data is present
+    data_complete = Column(Boolean, server_default="0")
+
     def __init__(self, name, ):
         """Init material-row.
 

@@ -6,3 +6,7 @@ SQLAlchemy ~= 1.0
 click ~= 6.6
 
 git+https://github.com/WilmerLab/raspa2
+
+redis
+git+https://github.com/paulboone/rq.git@handle_sigterms
+git+https://github.com/paulboone/sam-subjobserver.git

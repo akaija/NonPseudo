@@ -33,6 +33,13 @@ def run_all_simulations(material):
         results = simulation.surface_area.run(material.run_id, material.name)
         material.update_from_dict(results)
 
+def add_material_to_database(run_id, name):
+    material = Material(name)
+    material.run_id = run_id
+    session.add(material)
+    run_all_simulations(material)
+    session.commit()
+
 def worker_run_loop(run_id):
     """
     Args:
@@ -48,11 +55,4 @@ def worker_run_loop(run_id):
 
     for cif_name in mat_names:
         name = cif_name[:-4]
-
-        material = Material(name)
-        material.name = name
-        material.run_id = run_id
-
-        session.add(material)
-        run_all_simulations(material)
-        session.commit()
+        add_material_to_database(run_id, name)
