@@ -9,7 +9,7 @@ from string import Template
 import non_pseudo
 from non_pseudo import config
 
-def write_raspa_file(filename, name, helium_void_fraction):
+def write_raspa_file(config, filename, name, helium_void_fraction):
     """Writes RASPA input file for calculating gas loading.
 
     Args:
@@ -139,7 +139,7 @@ def parse_output(output_dir, simulation_config):
 
     return results
 
-def run(run_id, name, helium_void_fraction):
+def run(config, run_id, name, helium_void_fraction):
     """Runs gas loading simulation.
 
     Args:
@@ -165,7 +165,7 @@ def run(run_id, name, helium_void_fraction):
     os.makedirs(output_dir, exist_ok=True)
     filename = os.path.join(output_dir, "GasAdsorption.input")
 
-    write_raspa_file(filename, name, helium_void_fraction)
+    write_raspa_file(config, filename, name, helium_void_fraction)
     force_field_path = os.path.join(non_pseudo_dir, 'non_pseudo', 'simulation', 'forcefield')
     shutil.copy(os.path.join(force_field_path, 'force_field_mixing_rules.def'), output_dir)
     shutil.copy(os.path.join(force_field_path, 'force_field.def'), output_dir)

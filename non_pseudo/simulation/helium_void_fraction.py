@@ -9,7 +9,7 @@ from string import Template
 import non_pseudo
 from non_pseudo import config
 
-def write_raspa_file(filename, name):
+def write_raspa_file(config, filename, name):
     """Writes RASPA input file for calculating helium void fraction.
 
     Args:
@@ -64,7 +64,7 @@ def parse_output(output_file):
         print("\nVOID FRACTION :   %s\n" % (results['vf_helium_void_fraction']))
     return results
 
-def run(run_id, name):
+def run(config, run_id, name):
     """Runs void fraction simulation.
 
     Args:
@@ -90,7 +90,7 @@ def run(run_id, name):
     os.makedirs(output_dir, exist_ok=True)
     filename = os.path.join(output_dir, "VoidFraction.input")
 
-    write_raspa_file(filename, name)
+    write_raspa_file(config, filename, name)
     force_field_path = os.path.join(non_pseudo_dir, 'non_pseudo', 'simulation', 'forcefield')
     shutil.copy(os.path.join(force_field_path, 'force_field_mixing_rules.def'), output_dir)
     shutil.copy(os.path.join(force_field_path, 'force_field.def'), output_dir)
