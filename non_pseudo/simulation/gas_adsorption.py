@@ -156,7 +156,7 @@ def run(config, run_id, name, helium_void_fraction):
         non_pseudo_dir = os.path.dirname(os.path.dirname(non_pseudo.__file__))
         path = os.path.join(non_pseudo_dir, run_id, name)
     elif simulation_directory == 'scratch':
-        path = os.environ['SCRATCH']
+        path = os.environ['LOCAL']
     else:
         print('OUTPUT DIRECTORY NOT FOUND.')
     output_dir = os.path.join(path, 'output_%s_%s' % (name, uuid4()))
