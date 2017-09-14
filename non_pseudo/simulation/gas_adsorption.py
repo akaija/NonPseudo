@@ -135,7 +135,8 @@ def parse_output(output_dir, simulation_config):
         
             f = 'ga1'  # flag for second pressure gas adsorption simulations
 
-        print('\nSEE DATABASE FOR GAS ADSORPTION DATA.\n')
+            print('Pressure : {}'.format(p))
+            print('\n', results, '\n')
 
     return results
 
@@ -180,13 +181,14 @@ def run(config, run_id, name, helium_void_fraction):
             print("Date :\t%s" % datetime.now().date().isoformat())
             print("Time :\t%s" % datetime.now().time().isoformat())
             print("Calculating gas loading in %s..." % (name))
-            print('running..')
-            subprocess.run(['simulate', './GasAdsorption.input'], check=True, cwd=output_dir)
+            print('Running...')
+            print(output_dir)
+            subprocess.run('simulate GasAdsorption.input', shell=True, check=True, cwd=output_dir)
             print('...done running?')
             results = parse_output(output_dir, config['simulations']['gas_adsorption'])
             shutil.rmtree(path, ignore_errors=True)
             sys.stdout.flush()
-        except (FileNotFoundError, IndexError, KeyError) as err:
+        except (subprocess.CalledProcessError, FileNotFoundError, IndexError, KeyError) as err:
             print(err)
             print(err.args)
             continue

@@ -22,8 +22,4 @@ source ~/venv/htsohm/bin/activate
 cd $SLURM_SUBMIT_DIR
 sjs_launch_workers.sh $SLURM_CPUS_ON_NODE $stay_alive
 
-# workaround for .out / .err files not always being copied back to $PBS_O_WORKDIR
-cp /var/spool/torque/spool/$SLURM_JOB_ID.OU $SLURM_SUBMIT_DIR/$SLURM_JOB_ID$(hostname)_$$.out
-cp /var/spool/torque/spool/$SLURM_JOB_ID.ER $SLURM_SUBMIT_DIR/$SLURM_JOB_ID$(hostname)_$$.err
-
 exit

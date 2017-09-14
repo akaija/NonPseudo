@@ -9,7 +9,8 @@ import yaml
 
 import non_pseudo
 from non_pseudo.files import load_config_file
-from non_pseudo.non_pseudo import worker_run_loop
+from non_pseudo.non_pseudo import worker_run_loop, run_all_simulations, calculate_average_sigma_epsilon, calculate_vol_nden
+from non_pseudo.db import Material
 
 @click.group()
 def nps():
@@ -53,6 +54,36 @@ def launch_worker(run_id):
     """
     non_pseudo._init(run_id)
     worker_run_loop(run_id)
+
+@nps.command()
+@click.argument('crystal_name')
+def one_off(crystal_name):
+    config = load_config_file(
+            os.path.join(
+                os.path.dirname(os.path.dirname(non_pseudo.__file__)),
+                'settings',
+                'non_pseudo.yaml'))
+    crystal = Material(crystal_name)
+    crystal.run_id = 'one_off'
+
+    print('SCREENING : {}'.format(crystal_name))
+
+    run_all_simulations(config, crystal)
+    print('...done!\n')
+
+    print('Crystal name :\t\t{}'.format(crystal_name))
+    print('CH4 v/v 35bar :\t\t{}'.format(crystal.ga1_absolute_volumetric_loading))
+    print('CH4 v/v 65bar :\t\t{}'.format(crystal.ga0_absolute_volumetric_loading))
+    print('He void fraction :\t{}'.format(crystal.vf_helium_void_fraction))
+    print('Vol. surface area :\t{}\n'.format(crystal.sa_volumetric_surface_area))
+
+    avg_sig, avg_ep = calculate_average_sigma_epsilon(crystal_name)
+    v, nd = calculate_vol_nden(crystal_name)
+
+    print('\nAvg. sigma-value :\t{}'.format(avg_sig))
+    print('Avg. epsilon-value :\t{}'.format(avg_ep))
+    print('Unit cell vol. :\t{}'.format(v))
+    print('Number density :\t{}'.format(nd))
 
 if __name__ == '__main__':
     nps()

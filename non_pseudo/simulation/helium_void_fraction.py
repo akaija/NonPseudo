@@ -23,7 +23,6 @@ def write_raspa_file(config, filename, name):
     s = Template("""
 SimulationType          MonteCarlo
 NumberOfCycles          $NumberOfCycles
-
 PrintEvery              10
 PrintPropertiesEvery    10
 
@@ -86,10 +85,11 @@ def run(config, run_id, name):
         print('OUTPUT DIRECTORY NOT FOUND.')
     output_dir = os.path.join(path, 'output_%s_%s' % (name, uuid4()))
 
+
     print("Output directory :\t%s" % output_dir)
     os.makedirs(output_dir, exist_ok=True)
     filename = os.path.join(output_dir, "VoidFraction.input")
-
+     
     write_raspa_file(config, filename, name)
     force_field_path = os.path.join(non_pseudo_dir, 'non_pseudo', 'simulation', 'forcefield')
     shutil.copy(os.path.join(force_field_path, 'force_field_mixing_rules.def'), output_dir)
@@ -105,13 +105,13 @@ def run(config, run_id, name):
             print("Date :\t%s" % datetime.now().date().isoformat())
             print("Time :\t%s" % datetime.now().time().isoformat())
             print("Calculating void fraction of %s..." % (name))
-            subprocess.run(['simulate', './VoidFraction.input'], check=True, cwd=output_dir)
+            subprocess.run(['simulate', 'VoidFraction.input'], check=True, cwd=output_dir)
             filename = "output_%s_2.2.2_298.000000_0.data" % (name)
             output_file = os.path.join(output_dir, 'Output', 'System_0', filename)
             results = parse_output(output_file)
-            shutil.rmtree(path, ignore_errors=True)
+#            shutil.rmtree(path, ignore_errors=True)
             sys.stdout.flush()
-        except (FileNotFoundError, IndexError, KeyError) as err:
+        except (subprocess.CalledProcessError, FileNotFoundError, IndexError, KeyError) as err:
             print(err)
             print(err.args)
             continue

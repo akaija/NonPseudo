@@ -38,7 +38,7 @@ SurfaceProbeDistance    Sigma
 Component 0 MoleculeName                N2
             StartingBead                0
             MoleculeDefinition          TraPPE
-            SurfaceAreaProbability            1.0
+            SurfaceAreaProbability      1.0
             CreateNumberOfMolecules     0""")
     with open(filename, 'w') as raspa_input_file:
         raspa_input_file.write(
@@ -119,13 +119,13 @@ def run(config, run_id, name):
             print("Date :\t%s" % datetime.now().date().isoformat())
             print("Time :\t%s" % datetime.now().time().isoformat())
             print("Calculating surface area of %s..." % (name))
-            subprocess.run(['simulate', './SurfaceArea.input'], check=True, cwd=output_dir)
+            subprocess.run('simulate SurfaceArea.input', shell=True, check=True, cwd=output_dir)
             filename = "output_%s_2.2.2_298.000000_0.data" % (name)
             output_file = os.path.join(output_dir, 'Output', 'System_0', filename)
             results = parse_output(output_file)
             shutil.rmtree(path, ignore_errors=True)
             sys.stdout.flush()
-        except (FileNotFoundError, IndexError, KeyError) as err:
+        except (subprocess.CalledProcessError, FileNotFoundError, IndexError, KeyError) as err:
             print(err)
             print(err.args)
             continue
